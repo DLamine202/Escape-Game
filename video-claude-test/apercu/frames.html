@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../fonts/newsreader.css">
+<style>
+  :root{
+    --cream:#F4EFE6; --sand:#E9E1D3; --ink:#1E1D1A; --muted:#6B675F;
+    --clay:#C2613F; --clay-soft:#F1DDD2; --card:#FFFDF9; --line:#DDD4C4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream);
+    font-family:'Inter','Inter Display',sans-serif;color:var(--ink)}
+  .frame{position:absolute;inset:0;display:none}
+  .frame.on{display:block}
+  .serif{font-family:'Newsreader',Georgia,serif;font-weight:400;letter-spacing:-0.02em}
+
+  /* sous-titres */
+  .sub{position:absolute;left:80px;right:80px;bottom:190px;text-align:center;
+    font-family:'Inter Display';font-weight:700;font-size:58px;line-height:1.18;color:var(--ink)}
+  .sub em{font-style:normal;color:var(--clay)}
+  .sub.light{color:#fff}
+  .tag{position:absolute;top:90px;left:80px;font:600 26px 'Inter';letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted)}
+
+  /* FRAME 1 — accroche */
+  #f1{background:var(--ink)}
+  #f1 .tag{color:#9C968B}
+  .pile{position:absolute;left:0;right:0;top:250px;height:900px}
+  .t{position:absolute;background:#2A2925;border:1px solid #3A3832;border-radius:28px;
+    padding:30px 36px;font:500 38px 'Inter';color:#E9E4DA;display:flex;gap:22px;align-items:center;
+    box-shadow:0 30px 60px rgba(0,0,0,.35)}
+  .t i{width:20px;height:20px;border-radius:50%;background:var(--clay);flex:none}
+  .t small{font:500 26px 'Inter';color:#8E887D;margin-left:auto;padding-left:30px}
+  #f1 h1{position:absolute;left:80px;right:80px;top:1180px;font-size:104px;line-height:1.02;color:#F4EFE6}
+  #f1 h1 em{font-style:italic;color:#E58B6A}
+  .clock{position:absolute;right:80px;top:1080px;font:600 30px 'Inter';color:#E58B6A;letter-spacing:.06em}
+
+  /* FRAME 2 — démo */
+  #f2 .phone{position:absolute;left:110px;right:110px;top:200px;height:1300px;background:var(--card);
+    border-radius:64px;border:1px solid var(--line);box-shadow:0 50px 100px rgba(60,40,20,.14);overflow:hidden}
+  .bar{height:120px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 54px;gap:18px}
+  .dot{width:46px;height:46px;border-radius:14px;background:var(--clay)}
+  .bar b{font:500 44px 'Newsreader',serif}
+  .msgs{padding:56px 54px;display:flex;flex-direction:column;gap:38px}
+  .me{align-self:flex-end;max-width:82%;background:var(--sand);border-radius:36px 36px 10px 36px;
+    padding:30px 36px;font:400 36px/1.38 'Inter'}
+  .ai{font:400 37px/1.5 'Newsreader',serif;color:var(--ink)}
+  .ai p+p{margin-top:18px}
+  .ai .caret{display:inline-block;width:4px;height:40px;background:var(--clay);vertical-align:-6px;margin-left:4px}
+  .input{position:absolute;left:40px;right:40px;bottom:40px;height:110px;border:1px solid var(--line);
+    border-radius:55px;display:flex;align-items:center;padding:0 40px;font:400 34px 'Inter';color:#A39D92}
+  .chip{position:absolute;top:1545px;left:0;right:0;display:flex;justify-content:center;gap:18px}
+  .chip span{font:600 28px 'Inter';padding:16px 30px;border-radius:40px;background:var(--clay-soft);color:#9A4628}
+  #f2 .sub{bottom:100px}
+
+  /* FRAME 3 — appel à l'action */
+  #f3{background:var(--cream)}
+  .mark{position:absolute;left:0;right:0;top:560px;text-align:center}
+  .mark .word{font-size:200px;line-height:1}
+  .mark .line{margin:46px auto 0;font-size:62px;line-height:1.15;color:var(--ink);max-width:820px}
+  .mark .line em{font-style:italic;color:var(--clay)}
+  .cta{position:absolute;left:50%;transform:translateX(-50%);top:1190px;background:var(--ink);color:var(--cream);
+    font:600 44px 'Inter';padding:40px 76px;border-radius:70px;white-space:nowrap}
+  .url{position:absolute;left:0;right:0;top:1360px;text-align:center;font:500 36px 'Inter';color:var(--muted)}
+  .fine{position:absolute;left:0;right:0;bottom:120px;text-align:center;font:500 26px 'Inter';color:#9C968B}
+</style>
+</head>
+<body>
+
+<!-- 1. ACCROCHE -->
+<section class="frame" id="f1">
+  <div class="tag">Scène 1 · 0–5 s · accroche</div>
+  <div class="pile">
+    <div class="t" style="left:90px;top:0;transform:rotate(-4deg)"><i></i>Répondre au propriétaire<small>en retard</small></div>
+    <div class="t" style="left:240px;top:150px;transform:rotate(3deg)"><i></i>Comprendre ce contrat<small>14 pages</small></div>
+    <div class="t" style="left:70px;top:300px;transform:rotate(-2deg)"><i></i>Aider le petit pour ses devoirs</div>
+    <div class="t" style="left:200px;top:450px;transform:rotate(5deg)"><i></i>Refaire mon CV<small>depuis 2019</small></div>
+    <div class="t" style="left:110px;top:600px;transform:rotate(-6deg)"><i></i>Trouver quoi cuisiner ce soir</div>
+  </div>
+  <div class="clock">⏱ 23:47</div>
+  <h1 class="serif">Combien d'heures avez-vous perdues <em>cette semaine</em>&nbsp;?</h1>
+</section>
+
+<!-- 2. DÉMO -->
+<section class="frame" id="f2">
+  <div class="tag">Scène 4 · 14–30 s · démonstrations</div>
+  <div class="phone">
+    <div class="bar"><div class="dot"></div><b>Claude</b></div>
+    <div class="msgs">
+      <div class="me">Mon propriétaire augmente le loyer sans prévenir. Aide-moi à lui répondre, poliment mais fermement.</div>
+      <div class="ai">
+        <p>Voici une réponse claire et courtoise&nbsp;:</p>
+        <p>« Bonjour Monsieur Martin, j'ai bien reçu votre courrier. Avant toute augmentation, pourriez-vous m'indiquer sur quelle clause du bail elle repose&nbsp;?<span class="caret"></span></p>
+      </div>
+    </div>
+    <div class="input">Écrivez ou parlez à Claude…</div>
+  </div>
+  <div class="chip"><span>✉︎ Un mail</span><span>📄 Un contrat</span><span>🍳 Un repas</span></div>
+  <div class="sub">Un mail difficile&nbsp;? <em>Dix secondes</em>, c'est réglé.</div>
+</section>
+
+<!-- 3. APPEL À L'ACTION -->
+<section class="frame" id="f3">
+  <div class="tag">Scène 7 · 44–52 s · appel à l'action</div>
+  <div class="mark">
+    <div class="word serif">Claude</div>
+    <div class="line serif">Vous demandez.<br><em>Il s'occupe du reste.</em></div>
+  </div>
+  <div class="cta">Essayer gratuitement →</div>
+  <div class="url">claude.ai · sur ordinateur et téléphone</div>
+  <div class="fine">Vidéo test — maquette non officielle</div>
+</section>
+
+<script>
+  const f = new URLSearchParams(location.search).get('f') || '1';
+  document.getElementById('f'+f).classList.add('on');
+</script>
+</body>
+</html>
