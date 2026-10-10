@@ -4,3 +4,4 @@ voix-proposees/
 production/seg/
 production/stills/
 production/audio/*.wav
+__pycache__/
