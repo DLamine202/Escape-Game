@@ -5,7 +5,11 @@
 - Avant de produire une vidéo, **proposer d'abord** les voix, le design et le plan de montage, puis attendre la validation.
 - Vidéo pour les réseaux sociaux : format vertical 9:16, sous-titres intégrés, musique douce et basse.
 
-## Version 1 (terminée)
+## Préférence de l'utilisateur
+Après avoir vu la version longue, l'utilisateur préfère la **version 1, plus courte (environ 45 s)** : le format long est moins captivant.
+Pour les prochaines vidéos, viser 40 à 50 s.
+
+## Version 1 (terminée, préférée)
 `livrable/pub_claude_test_9x16.mp4` : 45 s, voix ElevenLabs « Chloé », musique synthétisée.
 Retours de l'utilisateur : musique trop forte et pas à son goût ; l'accroche doit nommer chaque tâche.
 
