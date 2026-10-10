@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../fonts/newsreader.css">
+<style>
+  :root{
+    --cream:#F4EFE6; --sand:#E9E1D3; --ink:#1E1D1A; --muted:#6B675F;
+    --clay:#C2613F; --clay-light:#E58B6A; --clay-soft:#F1DDD2; --card:#FFFDF9; --line:#DDD4C4;
+    --dk-card:#2A2925; --dk-line:#3A3832; --dk-muted:#8E887D;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink);
+    font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .abs{position:absolute}
+  .scene{position:absolute;inset:0;opacity:0}
+  .serif{font-family:'Newsreader',Georgia,serif;font-weight:400;letter-spacing:-0.02em}
+  .w{display:inline-block;white-space:pre}
+  .em{font-style:italic;color:var(--clay)}
+  #lumiere{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 45%,#FBF7F0 0%,var(--cream) 55%,#EDE5D7 100%)}
+
+  /* sous-titres */
+  .st{left:70px;right:70px;bottom:200px;text-align:center;font:700 60px/1.16 'Inter';color:var(--ink)}
+  .st.sombre{color:#F4EFE6}
+  .st.sombre .em{color:var(--clay-light)}
+  .st .w{opacity:.2}
+
+  /* --- 1. Accroche --- */
+  #question{left:90px;right:90px;top:760px;text-align:center;font-size:118px;line-height:1.02;color:#F4EFE6}
+  #question .em{color:var(--clay-light)}
+  .compteur{left:0;right:0;top:110px;text-align:center}
+  .compteur small{display:block;font:600 28px 'Inter';letter-spacing:.2em;text-transform:uppercase;color:#9C968B}
+  .compteur b{display:block;margin-top:30px;font:400 150px/1 'Newsreader',serif;color:var(--clay-light);font-variant-numeric:tabular-nums}
+  .pile{left:40px;right:40px;top:450px;display:flex;justify-content:center;flex-wrap:wrap;gap:14px}
+  .pile span{font:500 25px 'Inter';padding:13px 22px;border-radius:30px;background:var(--dk-card);border:1px solid var(--dk-line);color:var(--dk-muted);white-space:nowrap}
+  .carte{left:110px;right:110px;top:600px;height:680px;background:var(--dk-card);border:1px solid var(--dk-line);border-radius:48px;
+    box-shadow:0 50px 100px rgba(0,0,0,.45);padding:70px;color:#F4EFE6}
+  .carte .ico{width:130px;height:130px;border-radius:34px;background:#3A2A22;display:grid;place-items:center;font-size:72px}
+  .carte h2{margin-top:50px;font-size:96px;line-height:1.02;font-weight:400}
+  .carte p{margin-top:26px;font:500 34px 'Inter';color:var(--dk-muted)}
+  .tampon{right:60px;top:1190px;border:6px solid var(--clay-light);color:var(--clay-light);border-radius:30px;
+    padding:18px 40px;font:700 92px 'Inter';letter-spacing:-0.02em;background:var(--ink);white-space:nowrap}
+  #total{left:0;right:0;top:640px;text-align:center;color:#F4EFE6}
+  #total small{display:block;font:600 32px 'Inter';letter-spacing:.2em;text-transform:uppercase;color:#9C968B}
+  #total b{display:block;margin-top:40px;font:400 290px/1 'Newsreader',serif;color:var(--clay-light)}
+  #total i{display:block;margin-top:60px;font:italic 400 90px 'Newsreader',serif;color:#F4EFE6}
+
+  /* --- 2. Rupture --- */
+  #q2{left:90px;right:90px;top:640px;text-align:center;font-size:88px;line-height:1.08}
+  #demander{left:0;right:0;top:830px;text-align:center;font-size:170px;font-style:italic;color:var(--clay)}
+  .saisie{left:130px;right:130px;top:1150px;height:120px;border:1.5px solid var(--line);background:var(--card);
+    border-radius:60px;display:flex;align-items:center;padding:0 46px;font:400 38px 'Inter';color:#A39D92;
+    box-shadow:0 30px 70px rgba(60,40,20,.10)}
+  .caret{display:inline-block;width:4px;height:46px;background:var(--clay);margin-right:16px}
+
+  /* --- 3. Révélation --- */
+  #marque3{left:0;right:0;top:560px;text-align:center;font-size:230px;line-height:1}
+  #l1,#l2{left:90px;right:90px;text-align:center;font-size:66px;line-height:1.12}
+  #l1{top:880px} #l2{top:1050px}
+
+  /* --- 4. Démonstrations --- */
+  .puces{left:30px;right:30px;top:110px;display:flex;justify-content:center;gap:12px}
+  .puces span{font:600 26px 'Inter';padding:15px 22px;border-radius:40px;background:#E9E1D3;color:#8C857A;white-space:nowrap}
+  .puces span.on{background:var(--clay);color:#fff}
+  .puces span.fait{background:var(--clay-soft);color:#9A4628}
+  .tel{left:100px;right:100px;top:230px;height:1280px;background:var(--card);border-radius:64px;
+    border:1px solid var(--line);box-shadow:0 50px 100px rgba(60,40,20,.14);overflow:hidden}
+  .bar{height:118px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 54px;gap:18px}
+  .pastille{width:46px;height:46px;border-radius:14px;background:var(--clay)}
+  .bar b{font:500 44px 'Newsreader',serif}
+  .demo{position:absolute;left:52px;right:52px;top:166px;display:flex;flex-direction:column;gap:28px}
+  .moi{align-self:flex-end;max-width:84%;background:var(--sand);border-radius:36px 36px 10px 36px;
+    padding:26px 32px;font:400 34px/1.38 'Inter'}
+  .pj{align-self:flex-end;display:flex;align-items:center;gap:20px;background:#fff;border:1px solid var(--line);
+    border-radius:26px;padding:20px 26px;font:500 30px 'Inter'}
+  .pj .ico{width:58px;height:72px;border-radius:10px;background:var(--clay-soft);display:grid;place-items:center;font:700 19px 'Inter';color:var(--clay)}
+  .pj small{display:block;font:400 24px 'Inter';color:var(--muted);margin-top:4px}
+  .frigo{align-self:flex-end;width:320px;height:290px;border-radius:26px;overflow:hidden;
+    background:linear-gradient(#f7f9fb,#e6edf2);border:1px solid var(--line);position:relative}
+  .frigo .et{position:absolute;left:0;right:0;height:6px;background:#cfd8df}
+  .frigo .it{position:absolute;font-size:60px}
+  .ia{font:400 35px/1.46 'Newsreader',serif;color:var(--ink);white-space:pre-wrap}
+  .champ{position:absolute;left:36px;right:36px;bottom:36px;height:108px;border:1px solid var(--line);
+    border-radius:54px;display:flex;align-items:center;padding:0 40px;font:400 33px 'Inter';color:#A39D92;white-space:nowrap;overflow:hidden}
+  .champ.tape{color:var(--ink)}
+  .envoi{position:absolute;right:52px;bottom:52px;width:76px;height:76px;border-radius:50%;background:var(--clay);
+    display:grid;place-items:center;color:#fff;font:700 38px 'Inter'}
+  #s4 .st{bottom:120px}
+
+  /* --- 5. Rassurer --- */
+  #titre5{left:90px;right:90px;top:430px;text-align:center;font-size:96px;line-height:1.05}
+  .mode{left:130px;right:130px;height:170px;border-radius:44px;background:var(--card);border:1px solid var(--line);
+    display:flex;align-items:center;gap:34px;padding:0 50px;font:500 50px 'Inter';box-shadow:0 30px 60px rgba(60,40,20,.08)}
+  .mode .rond{width:96px;height:96px;border-radius:50%;background:var(--clay-soft);display:grid;place-items:center;font-size:46px}
+  #m1{top:880px} #m2{top:1090px}
+  .onde{display:flex;gap:9px;align-items:center;margin-left:auto;height:80px}
+  .onde i{display:block;width:9px;border-radius:5px;background:var(--clay)}
+  #fin5{left:0;right:0;top:1380px;text-align:center;font-size:110px;font-style:italic;color:var(--clay)}
+
+  /* --- 6. Bénéfice --- */
+  #lab6{left:0;right:0;top:330px;text-align:center;font:600 32px 'Inter';letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  #val6{left:0;right:0;top:400px;text-align:center;font:400 250px/1 'Newsreader',serif}
+  #phrase6{left:90px;right:90px;top:820px;text-align:center;font-size:96px;line-height:1.06}
+  .moment{left:50%;font:500 36px 'Inter';background:var(--clay-soft);color:#8E3F22;padding:22px 38px;border-radius:50px;white-space:nowrap}
+
+  /* --- 7. Appel à l'action --- */
+  #marque7{left:0;right:0;top:520px;text-align:center;font-size:220px;line-height:1}
+  #a7{left:0;right:0;top:830px;text-align:center;font-size:72px}
+  #b7{left:0;right:0;top:915px;text-align:center;font-size:72px;font-style:italic;color:var(--clay)}
+  .bouton{left:50%;top:1190px;background:var(--ink);color:var(--cream);font:600 48px 'Inter';padding:42px 80px;border-radius:80px;white-space:nowrap}
+  .halo{left:50%;top:1190px;width:700px;height:136px;border-radius:80px;border:3px solid var(--clay)}
+  #url{left:0;right:0;top:1380px;text-align:center;font:500 38px 'Inter';color:var(--muted)}
+  #mention{left:0;right:0;bottom:110px;text-align:center;font:500 26px 'Inter';color:#9C968B}
+</style>
+</head>
+<body>
+<div id="lumiere" class="abs"></div>
+
+<section class="scene" id="s1">
+  <div class="abs compteur" id="compteur"><small>Temps perdu cette semaine</small><b id="cval">0 h 00</b></div>
+  <div class="abs pile" id="pile"></div>
+  <div id="cartes"></div>
+  <div class="abs serif" id="question"></div>
+  <div class="abs" id="total"><small>Au total, chaque semaine</small><b id="tval">5 h 45</b><i id="tsem">Chaque semaine.</i></div>
+  <div class="abs st sombre" id="st1"></div>
+</section>
+
+<section class="scene" id="s2">
+  <div class="abs serif" id="q2"></div>
+  <div class="abs serif" id="demander">demander&nbsp;?</div>
+  <div class="abs saisie" id="saisie"><span class="caret" id="caret2"></span>Demandez n'importe quoi…</div>
+</section>
+
+<section class="scene" id="s3">
+  <div class="abs serif" id="marque3">Claude</div>
+  <div class="abs serif" id="l1"></div>
+  <div class="abs serif" id="l2"></div>
+</section>
+
+<section class="scene" id="s4">
+  <div class="abs puces" id="puces"><span>📄 CV</span><span>✉️ Mail</span><span>📑 Contrat</span><span>✏️ Devoirs</span><span>🍳 Dîner</span></div>
+  <div class="abs tel" id="tel">
+    <div class="bar"><div class="pastille"></div><b>Claude</b></div>
+    <div class="demo" id="d0">
+      <div class="pj"><div class="ico">PDF</div><div>CV_2019.pdf<small>2 pages</small></div></div>
+      <div class="moi">Mets mon CV à jour pour un poste de conseillère de vente.</div>
+      <div class="ia" data-ia></div>
+    </div>
+    <div class="demo" id="d1">
+      <div class="moi">Mon propriétaire augmente le loyer sans prévenir. Aide-moi à lui répondre, poliment mais fermement.</div>
+      <div class="ia" data-ia></div>
+    </div>
+    <div class="demo" id="d2">
+      <div class="pj"><div class="ico">PDF</div><div>Contrat_location.pdf<small>14 pages</small></div></div>
+      <div class="moi">Explique-moi ce contrat simplement. Il y a un piège&nbsp;?</div>
+      <div class="ia" data-ia></div>
+    </div>
+    <div class="demo" id="d3">
+      <div class="moi">Mon fils ne comprend pas les fractions. Explique-moi simplement, pour que je puisse l'aider.</div>
+      <div class="ia" data-ia></div>
+    </div>
+    <div class="demo" id="d4">
+      <div class="frigo">
+        <div class="et" style="top:96px"></div><div class="et" style="top:192px"></div>
+        <div class="it" style="left:28px;top:20px">🥚</div><div class="it" style="left:118px;top:20px">🧀</div><div class="it" style="left:214px;top:20px">🍋</div>
+        <div class="it" style="left:38px;top:116px">🍅</div><div class="it" style="left:136px;top:116px">🥬</div><div class="it" style="left:228px;top:116px">🧈</div>
+        <div class="it" style="left:68px;top:212px">🥛</div><div class="it" style="left:184px;top:212px">🫑</div>
+      </div>
+      <div class="moi">Qu'est-ce que je peux cuisiner avec ça&nbsp;?</div>
+      <div class="ia" data-ia></div>
+    </div>
+    <div class="champ" id="champ">Écrivez ou parlez à Claude…</div>
+    <div class="envoi">↑</div>
+  </div>
+  <div class="abs st" id="st4"></div>
+</section>
+
+<section class="scene" id="s5">
+  <div class="abs serif" id="titre5"></div>
+  <div class="abs mode" id="m1"><div class="rond">⌨️</div>Vous écrivez</div>
+  <div class="abs mode" id="m2"><div class="rond">🎙️</div>ou vous parlez<div class="onde" id="onde"></div></div>
+  <div class="abs serif" id="fin5">et c'est tout.</div>
+</section>
+
+<section class="scene" id="s6">
+  <div class="abs" id="lab6">Temps perdu</div>
+  <div class="abs serif" id="val6">5 h 45</div>
+  <div class="abs serif" id="phrase6"></div>
+  <div id="moments"></div>
+</section>
+
+<section class="scene" id="s7">
+  <div class="abs serif" id="marque7">Claude</div>
+  <div class="abs serif" id="a7">Vous demandez.</div>
+  <div class="abs serif" id="b7">Il s'occupe du reste.</div>
+  <div class="abs halo" id="halo"></div>
+  <div class="abs bouton" id="bouton">Essayer gratuitement →</div>
+  <div class="abs" id="url">claude.ai · sur ordinateur et téléphone</div>
+  <div class="abs" id="mention">Vidéo test — maquette non officielle</div>
+</section>
+
+<script>
+const TL = window.TIMELINE;
+const P = TL.phrases;               // phrases canoniques (voir audio2.py)
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const back = x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const hm = m => `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}`;
+
+function scene(id, t, a, b, fi = .35, fo = .35) {
+  const el = $(id);
+  const o = Math.min(prog(t, a, a + fi), 1 - prog(t, b - fo, b));
+  el.style.opacity = o;
+  el.style.display = o <= 0 ? 'none' : 'block';
+  el.style.transform = `scale(${1 + 0.02 * prog(t, a, b)})`;
+  return o > 0;
+}
+
+// Texte révélé mot à mot ; *mots en valeur* entre astérisques.
+function mots(el, texte, t0, t1) {
+  el.innerHTML = '';
+  const parts = texte.split(' ');
+  const total = parts.reduce((s, p) => s + p.length + 1, 0);
+  let acc = 0, em = false;
+  el._spans = parts.map(p => {
+    let mot = p;
+    if (mot.startsWith('*')) { em = true; mot = mot.slice(1); }
+    const fin = mot.includes('*');
+    mot = mot.replace('*', '');
+    const s = document.createElement('span');
+    s.className = 'w' + (em ? ' em' : '');
+    s.textContent = mot + ' ';
+    s.dataset.t = t0 + (t1 - t0) * (acc / total);
+    acc += p.length + 1;
+    if (fin) em = false;
+    el.appendChild(s);
+    return s;
+  });
+}
+function revele(el, t, dur = .32, mode = 'monte') {
+  for (const s of el._spans) {
+    const x = eo(prog(t, +s.dataset.t, +s.dataset.t + dur));
+    if (mode === 'monte') { s.style.opacity = x; s.style.transform = `translateY(${(1 - x) * 34}px)`; }
+    else s.style.opacity = .2 + .8 * x;
+  }
+}
+// Sous-titres : [index de phrase, texte]. Chacun reste jusqu'au suivant.
+function sousTitres(el, liste, t, fin) {
+  let idx = -1;
+  liste.forEach(([p], i) => { if (t >= P[p].t0 - .12) idx = i; });
+  if (idx >= 0 && t > (liste[idx + 1] ? 1e9 : fin)) idx = -1;
+  if (el._idx !== idx) {
+    el._idx = idx;
+    if (idx >= 0) mots(el, liste[idx][1], P[liste[idx][0]].t0, P[liste[idx][0]].t1); else el.innerHTML = '';
+  }
+  if (idx < 0) return;
+  revele(el, t, .14, 'surligne');
+  const a = eo(prog(t, P[liste[idx][0]].t0 - .12, P[liste[idx][0]].t0 + .12));
+  el.style.opacity = a;
+  el.style.transform = `translateY(${(1 - a) * 18}px)`;
+}
+
+/* ---------- données ---------- */
+// Tâches de l'accroche : phrase de début, phrase de fin (tampon), minutes.
+const TACHES = [
+  { p0: 1, p1: 1, ico: '📄', titre: 'Refaire votre CV', sous: 'Dernière mise à jour : 2019', min: 120, puce: '📄 CV · 2 h' },
+  { p0: 2, p1: 2, ico: '✉️', titre: 'Répondre à ce mail', sous: 'En attente depuis 3 jours', min: 45, puce: '✉️ Mail · 45 min' },
+  { p0: 3, p1: 3, ico: '📑', titre: 'Comprendre un contrat de 14&nbsp;pages', sous: "Le bail, l'assurance, le forfait…", min: 90, puce: '📑 Contrat · 1 h 30' },
+  { p0: 4, p1: 5, ico: '✏️', titre: 'Aider aux devoirs', sous: "Les fractions… c'était il y a longtemps", min: 60, puce: '✏️ Devoirs · 1 h' },
+  { p0: 6, p1: 6, ico: '🍳', titre: 'Savoir quoi cuisiner', sous: 'Tous les soirs, la même question', min: 30, puce: '🍳 Dîner · 30 min' },
+];
+TACHES.forEach((x, i) => {
+  x.tIn = P[x.p0].t0 - .25;
+  x.tamp = P[x.p1].t1 - .15;
+  x.tOut = i < 4 ? P[TACHES[i + 1] ? TACHES[i + 1].p0 : 7].t0 - .35 : P[7].t0 - .3;
+  const c = document.createElement('div');
+  c.className = 'abs carte'; c.id = 'k' + i;
+  c.innerHTML = `<div class="ico">${x.ico}</div><h2 class="serif">${x.titre}</h2><p>${x.sous}</p>`;
+  $('cartes').appendChild(c);
+  const tp = document.createElement('div');
+  tp.className = 'abs tampon'; tp.id = 'tp' + i; tp.textContent = '+' + (x.min >= 60 ? hm(x.min).replace(' 00', '') : x.min + ' min');
+  $('cartes').appendChild(tp);
+  const pu = document.createElement('span');
+  pu.id = 'pu' + i; pu.textContent = x.puce;
+  $('pile').appendChild(pu);
+});
+TACHES[4].tOut = P[7].t0 - .3;
+TACHES.forEach((x, i) => { if (i < 4) x.tOut = TACHES[i + 1].tIn - .05; });
+
+mots($('question'), 'Combien de temps *perdez-vous…*', P[0].t0, P[0].t1);
+const ST1 = [[1, 'Pour refaire *votre CV* ?'], [2, 'Pour répondre à ce mail que vous *repoussez depuis trois jours* ?'],
+  [3, 'Pour comprendre un *contrat de quatorze pages* ?'], [4, 'Pour aider votre enfant *avec ses devoirs…*'],
+  [5, '…sans vous souvenir *de la leçon* ?'], [6, 'Et chaque soir, pour savoir *quoi cuisiner* ?']];
+mots($('q2'), 'Et si vous pouviez simplement…', P[10].t0, P[10].t1);
+mots($('l1'), 'Vous lui parlez comme à une personne.', P[13].t0, P[13].t1);
+mots($('l2'), 'Il vous répond *comme un expert.*', P[14].t0, P[14].t1);
+mots($('titre5'), "Pas besoin d'être *doué en informatique.*", P[26].t0, P[26].t1);
+mots($('phrase6'), 'Ces heures-là… redeviennent *les vôtres.*', P[30].t0, P[31].t1);
+
+const ST4 = [[15, '*Votre CV* ?'], [16, 'Il le remet à jour *en quelques minutes.*'], [17, '*Ce mail* ?'], [18, '*Dix secondes,* c\'est réglé.'],
+  [19, '*Le contrat* ?'], [20, 'Il vous l\'explique *simplement,*'], [21, 'et vous signale *les points à surveiller.*'],
+  [22, '*Les devoirs* ?'], [23, 'Il réexplique la leçon, *avec patience.*'], [24, '*Le dîner* ?'], [25, 'Montrez-lui *votre frigo.*']];
+
+const DEMOS = [
+  { p: 15, tape: 'Mets mon CV à jour…', ia: "Voici votre CV modernisé ✨\n\n• Titre : Conseillère de vente, 6 ans d'expérience\n• Points forts : relation client, caisse, gestion des stocks\n• Mise en page claire, sur une seule page." },
+  { p: 17, tape: 'Mon propriétaire augmente le loyer…', ia: "Voici une réponse claire et courtoise :\n\n« Bonjour Monsieur Martin,\nj'ai bien reçu votre courrier. Avant toute augmentation, pourriez-vous m'indiquer sur quelle clause du bail elle repose ?\nBien cordialement. »" },
+  { p: 19, tape: 'Explique-moi ce contrat simplement…', ia: "En résumé, en 3 points :\n\n1. Engagement d'un an, résiliable avec un mois de préavis.\n2. Les charges sont incluses, sauf l'électricité.\n3. ⚠️ À surveiller : l'article 8 prévoit des frais si vous partez avant 6 mois." },
+  { p: 22, tape: 'Mon fils ne comprend pas les fractions…', ia: "Imaginez une pizza coupée en 4 parts égales 🍕\n\nSi vous en mangez 1, vous avez mangé 1/4 de la pizza.\n\n• Le chiffre du bas : en combien de parts on coupe.\n• Le chiffre du haut : combien de parts on prend." },
+  { p: 24, tape: "Qu'est-ce que je peux cuisiner avec ça ?", ia: "Avec vos œufs, tomates et fromage : une omelette fondante, prête en 15 minutes 🍳\n\n1. Battez 4 œufs avec une pincée de sel.\n2. Ajoutez les tomates en dés et le fromage.\n3. Cuisez à feu doux, 4 minutes." },
+];
+DEMOS.forEach((d, i) => { d.t = P[d.p].t0 - .35; });
+DEMOS.forEach((d, i) => { d.fin = DEMOS[i + 1] ? DEMOS[i + 1].t - .1 : 999; });
+
+const MOMENTS = ['☕ Un café en terrasse', '🌳 Le parc avec les enfants', '📖 Une soirée rien qu\'à vous'];
+MOMENTS.forEach((x, i) => {
+  const d = document.createElement('div');
+  d.className = 'abs moment'; d.id = 'mo' + i; d.textContent = x; d.style.top = (1240 + i * 120) + 'px';
+  $('moments').appendChild(d);
+});
+for (let i = 0; i < 9; i++) $('onde').appendChild(document.createElement('i'));
+
+// Bornes des scènes
+const S = {
+  s1: [0, P[10].t0 - .2], s2: [P[10].t0 - .45, P[12].t0 + .1], s3: [P[12].t0 - .15, P[15].t0 - .45],
+  s4: [P[15].t0 - .75, P[26].t0 - .45], s5: [P[26].t0 - .6, P[30].t0 - .2],
+  s6: [P[30].t0 - .45, P[32].t0 - .3], s7: [P[32].t0 - .45, 999],
+};
+
+/* ---------- rendu ---------- */
+window.render = function (t) {
+  $('lumiere').style.clipPath = `circle(${eio(prog(t, S.s2[0], S.s2[0] + 1)) * 120}% at 50% 55%)`;
+
+  // 1. Accroche
+  if (scene('s1', t, S.s1[0], S.s1[1], .2, .6)) {
+    const q = eo(prog(t, P[0].t0 - .2, P[0].t0 + .4)) * (1 - eio(prog(t, TACHES[0].tIn - .1, TACHES[0].tIn + .35)));
+    $('question').style.opacity = q;
+    $('question').style.transform = `translateY(${(1 - q) * 30}px)`;
+    revele($('question'), t, .4);
+    let cumul = 0;
+    TACHES.forEach((x, i) => {
+      const e = back(prog(t, x.tIn, x.tIn + .55));
+      const s = eio(prog(t, x.tOut, x.tOut + .4));
+      const c = $('k' + i);
+      c.style.opacity = clamp(e) * (1 - s);
+      c.style.transform = `translate(${(1 - e) * 500 - s * 40}px, ${-s * 420}px) rotate(${(1 - e) * 8 - 2 + s * 4}deg) scale(${1 - s * .5})`;
+      const tp = back(prog(t, x.tamp, x.tamp + .3));
+      const el = $('tp' + i);
+      el.style.opacity = clamp(prog(t, x.tamp, x.tamp + .08)) * (1 - s);
+      el.style.transform = `rotate(8deg) scale(${(2.2 - 1.2 * tp) * (1 - s * .5)}) translateY(${-s * 400}px)`;
+      if (t >= x.tamp + .12) cumul += x.min;
+      const pu = $('pu' + i);
+      const pv = eo(prog(t, x.tOut + .2, x.tOut + .6));
+      pu.style.display = pv > 0 ? 'inline-block' : 'none';
+      pu.style.opacity = pv; pu.style.transform = `scale(${.7 + .3 * pv})`;
+    });
+    // Compteur (glisse doucement vers la nouvelle valeur)
+    const cible = cumul;
+    const affiche = Math.round(cible);
+    $('cval').textContent = hm(affiche);
+    const comp = eo(prog(t, TACHES[0].tIn, TACHES[0].tIn + .5)) * (1 - eio(prog(t, P[7].t0 - .4, P[7].t0)));
+    $('compteur').style.opacity = comp;
+    $('pile').style.opacity = comp;
+    const pulse = TACHES.reduce((m, x) => Math.max(m, 1 - prog(t, x.tamp + .12, x.tamp + .5)) * (t >= x.tamp + .12 ? 1 : 0) || m, 0);
+    $('cval').style.transform = `scale(${1 + .12 * pulse})`;
+    // Total
+    const tt = eo(prog(t, P[7].t0 - .2, P[7].t0 + .5));
+    $('total').style.opacity = tt;
+    $('tval').style.transform = `scale(${.85 + .15 * back(prog(t, P[8].t0 - .1, P[8].t0 + .5))})`;
+    $('tval').style.opacity = eo(prog(t, P[8].t0 - .15, P[8].t0 + .3));
+    $('tsem').style.opacity = eo(prog(t, P[9].t0 - .1, P[9].t0 + .4));
+    sousTitres($('st1'), ST1, t, P[6].t1 + .5);
+  }
+
+  // 2. Rupture
+  if (scene('s2', t, S.s2[0], S.s2[1], .3, .35)) {
+    revele($('q2'), t, .4);
+    const d = back(prog(t, P[11].t0 - .05, P[11].t0 + .45));
+    $('demander').style.opacity = clamp(d);
+    $('demander').style.transform = `scale(${.75 + .25 * d})`;
+    const s = eo(prog(t, P[11].t1 + .2, P[11].t1 + .65));
+    $('saisie').style.opacity = s;
+    $('saisie').style.transform = `translateY(${(1 - s) * 40}px)`;
+    $('caret2').style.opacity = (Math.floor(t * 2.4) % 2) ? 0 : 1;
+  }
+
+  // 3. Révélation
+  if (scene('s3', t, S.s3[0], S.s3[1], .25, .4)) {
+    const m = eo(prog(t, P[12].t0 - .05, P[12].t0 + .8));
+    $('marque3').style.opacity = m;
+    $('marque3').style.transform = `scale(${1.18 - .18 * m})`;
+    $('marque3').style.letterSpacing = `${(1 - m) * 0.12 - 0.02}em`;
+    revele($('l1'), t); revele($('l2'), t);
+  }
+
+  // 4. Démonstrations
+  if (scene('s4', t, S.s4[0], S.s4[1], .4, .4)) {
+    const e = eo(prog(t, S.s4[0], S.s4[0] + .7));
+    $('tel').style.transform = `translateY(${(1 - e) * 500}px)`;
+    const actif = DEMOS.reduce((a, d, i) => t >= d.t ? i : a, 0);
+    [...$('puces').children].forEach((s, i) => {
+      s.classList.toggle('on', i === actif);
+      s.classList.toggle('fait', i < actif);
+      s.textContent = (i < actif ? '✓ ' : '') + s.textContent.replace('✓ ', '');
+    });
+    DEMOS.forEach((d, i) => {
+      const el = $('d' + i);
+      const vis = t >= d.t + .7 && t < d.fin;
+      el.style.display = vis ? 'flex' : 'none';
+      if (!vis) return;
+      [...el.children].forEach((it, k) => {
+        if (it.hasAttribute('data-ia')) return;
+        const x = back(prog(t, d.t + .7 + k * .08, d.t + 1.0 + k * .08));
+        it.style.opacity = clamp(x); it.style.transform = `translateY(${(1 - x) * 40}px) scale(${.92 + .08 * x})`;
+      });
+      const ia = el.querySelector('[data-ia]');
+      const dur = Math.min(2.6, (d.fin - d.t) - 1.6);
+      const n = Math.floor(d.ia.length * eio(prog(t, d.t + 1.15, d.t + 1.15 + dur)));
+      ia.textContent = d.ia.slice(0, n);
+    });
+    const d = DEMOS[actif];
+    const champ = $('champ');
+    if (t >= d.t && t < d.t + .7) {
+      champ.textContent = d.tape.slice(0, Math.ceil(d.tape.length * prog(t, d.t, d.t + .6)));
+      champ.classList.add('tape');
+    } else { champ.textContent = 'Écrivez ou parlez à Claude…'; champ.classList.remove('tape'); }
+    sousTitres($('st4'), ST4, t, 999);
+  }
+
+  // 5. Rassurer
+  if (scene('s5', t, S.s5[0], S.s5[1], .4, .4)) {
+    revele($('titre5'), t);
+    [['m1', P[27].t0 - .15], ['m2', P[28].t0 - .15]].forEach(([id, a]) => {
+      const x = back(prog(t, a, a + .5));
+      $(id).style.opacity = clamp(x);
+      $(id).style.transform = `translateX(${(1 - x) * 120}px)`;
+    });
+    [...$('onde').children].forEach((b, i) => {
+      const actif = prog(t, P[28].t0, P[28].t0 + .2) * (1 - prog(t, P[29].t1, P[29].t1 + .3));
+      b.style.height = (14 + actif * 60 * Math.abs(Math.sin(t * 9 + i * 0.9))) + 'px';
+    });
+    const f = back(prog(t, P[29].t0 - .1, P[29].t0 + .4));
+    $('fin5').style.opacity = clamp(f);
+    $('fin5').style.transform = `scale(${.8 + .2 * f})`;
+  }
+
+  // 6. Bénéfice
+  if (scene('s6', t, S.s6[0], S.s6[1], .35, .4)) {
+    const bascule = prog(t, P[31].t0 - .1, P[31].t0 + .3);
+    $('lab6').textContent = bascule > .5 ? 'Temps retrouvé' : 'Temps perdu';
+    $('val6').textContent = (bascule > .5 ? '+ ' : '') + '5 h 45';
+    $('val6').style.color = bascule > .5 ? 'var(--clay)' : 'var(--ink)';
+    const flip = Math.abs(Math.cos(Math.PI * bascule));
+    $('val6').style.transform = `scaleY(${flip})`;
+    $('lab6').style.opacity = flip;
+    revele($('phrase6'), t);
+    MOMENTS.forEach((_, i) => {
+      const a = P[31].t1 + .1 + i * .35, x = eo(prog(t, a, a + .6));
+      $('mo' + i).style.opacity = x;
+      $('mo' + i).style.transform = `translate(-50%, ${(1 - x) * 60}px)`;
+    });
+  }
+
+  // 7. Appel à l'action
+  if (scene('s7', t, S.s7[0], S.s7[1], .35, .1)) {
+    const m = eo(prog(t, P[32].t0 - .1, P[32].t0 + .7));
+    $('marque7').style.opacity = m;
+    $('marque7').style.transform = `scale(${1.12 - .12 * m})`;
+    [['a7', P[33].t0 - .1], ['b7', P[34].t0 - .1]].forEach(([id, a]) => {
+      const x = eo(prog(t, a, a + .5));
+      $(id).style.opacity = x; $(id).style.transform = `translateY(${(1 - x) * 30}px)`;
+    });
+    const tb = P[35].t0 - .1;
+    const b = back(prog(t, tb, tb + .5));
+    $('bouton').style.opacity = clamp(b);
+    $('bouton').style.transform = `translateX(-50%) scale(${(.8 + .2 * b) * (1 + 0.025 * Math.sin(Math.max(0, t - tb - .6) * 4))})`;
+    const h = ((t - tb - .6) % 1.6) / 1.6;
+    $('halo').style.opacity = t > tb + .6 ? (1 - h) * .6 : 0;
+    $('halo').style.transform = `translateX(-50%) scale(${1 + h * .25}, ${1 + h * .6})`;
+    $('url').style.opacity = eo(prog(t, tb + .7, tb + 1.2));
+    $('mention').style.opacity = eo(prog(t, tb + 1.2, tb + 1.8));
+  }
+};
+window.render(0);
+</script>
+</body>
+</html>
