@@ -1,4 +1,4 @@
-// Rendu image par image de pub.html (Chromium headless) vers des segments vidéo.
+// Rendu image par image de la pub (PAGE=pub.html pour la v1, pub2.html par défaut) (Chromium headless) vers des segments vidéo.
 // Usage : node render.js <debut_image> <fin_image> <sortie.mp4>   |   node render.js --stills t1,t2,...
 const { chromium } = require('playwright');
 const { spawn } = require('child_process');
@@ -10,7 +10,7 @@ const timeline = JSON.parse(fs.readFileSync(__dirname + '/timeline.json', 'utf8'
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   await p.addInitScript(tl => { window.TIMELINE = tl; }, timeline);
-  await p.goto('file://' + __dirname + '/pub.html');
+  await p.goto('file://' + __dirname + '/' + (process.env.PAGE || 'pub2.html'));
   await p.evaluate(() => document.fonts.ready);
   if (process.argv[2] === '--stills') {
     for (const t of process.argv[3].split(',').map(Number)) {

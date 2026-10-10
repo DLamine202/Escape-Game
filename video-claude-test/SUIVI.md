@@ -9,16 +9,22 @@
 `livrable/pub_claude_test_9x16.mp4` : 45 s, voix ElevenLabs « Chloé », musique synthétisée.
 Retours de l'utilisateur : musique trop forte et pas à son goût ; l'accroche doit nommer chaque tâche.
 
-## Version 2 (validée, en cours)
-- Script validé : voir `production/script_v2.txt`.
-- Musique : option B, piano composé localement (`production/piano.py`, fonction `composer`).
-- Animation : `production/pub2.html` (7 scènes). Elle attend un `timeline.json` avec 36 phrases canoniques (liste ci-dessous).
-- Rendu : `production/render.js` (Playwright + ffmpeg). Pour la v2, il faut le faire pointer vers `pub2.html`.
+## Version 2 (terminée)
+`livrable/pub_claude_v2_9x16.mp4` : 65 s, 1080×1920, 30 i/s.
+- Voix : ElevenLabs « Chloe – Top France » (`eleven_multilingual_v2`), une seule prise (926 crédits de l'offre gratuite),
+  accélérée ×1,1 sans changer la hauteur. Fichiers : `production/audio/voix_v2_brute.mp3` et `voix_v2_mots.json`
+  (transcription horodatée mot par mot, ElevenLabs Scribe, gratuite).
+- Audio : `production/audio2.py` recale les 36 phrases, règle les pauses (`PAUSES`, `PLAFOND`), compose le piano
+  (`piano.composer`), baisse la musique sous la voix et normalise à −15 LUFS. Il écrit `timeline.json`.
+- Image : `node render.js <debut> <fin> seg/pX.mp4` (rend `pub2.html` par défaut ; `PAGE=pub.html` pour la v1).
+- L'API Gemini n'est plus nécessaire : la clé fournie était bloquée pour ce service (`API_KEY_SERVICE_BLOCKED`).
 
-**Bloquant** : ElevenLabs renvoie « 429 trop de demandes » sur la version gratuite.
-Prochaine étape : générer la voix avec **Google AI Studio (API Gemini, synthèse vocale, offre gratuite)**,
-avec une clé fournie dans la variable d'environnement `GEMINI_API_KEY`. Proposer 2 ou 3 voix françaises
-à l'utilisateur avant la prise finale.
+### Refaire la vidéo
+```
+cd production && python3 audio2.py
+# 4 rendus en parallèle (nombre d'images = durée × 30), puis :
+ffmpeg -f concat -safe 0 -i seg/liste.txt -i audio/mix_v2.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest ../livrable/pub_claude_v2_9x16.mp4
+```
 
 ## Les 36 phrases canoniques (indices utilisés par pub2.html)
 0 Combien de temps perdez-vous… · 1 pour refaire votre CV ? · 2 Pour répondre à ce mail… · 3 Pour comprendre un contrat…
