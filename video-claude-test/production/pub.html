@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../fonts/newsreader.css">
+<style>
+  :root{
+    --cream:#F4EFE6; --sand:#E9E1D3; --ink:#1E1D1A; --muted:#6B675F;
+    --clay:#C2613F; --clay-light:#E58B6A; --clay-soft:#F1DDD2; --card:#FFFDF9; --line:#DDD4C4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink);
+    font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .abs{position:absolute}
+  .scene{position:absolute;inset:0;opacity:0;will-change:transform,opacity}
+  .serif{font-family:'Newsreader',Georgia,serif;font-weight:400;letter-spacing:-0.02em}
+  .w{display:inline-block;white-space:pre}
+  em, .em{font-style:italic;color:var(--clay)}
+
+  #lumiere{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 45%,#FBF7F0 0%,var(--cream) 55%,#EDE5D7 100%)}
+
+  /* --- Scène 1 : accroche --- */
+  .t{position:absolute;background:#2A2925;border:1px solid #3A3832;border-radius:28px;
+    padding:30px 36px;font:500 38px 'Inter';color:#E9E4DA;display:flex;gap:22px;align-items:center;
+    box-shadow:0 30px 60px rgba(0,0,0,.35);white-space:nowrap}
+  .t i{width:20px;height:20px;border-radius:50%;background:var(--clay);flex:none}
+  .t small{font:500 26px 'Inter';color:#8E887D;margin-left:auto;padding-left:30px}
+  #horloge{right:80px;top:150px;font:600 34px 'Inter';color:var(--clay-light);letter-spacing:.06em}
+  #s1 .petit{left:80px;top:1130px;font-size:64px;color:var(--clay-light);font-style:italic}
+  #s1 .grand{left:80px;right:70px;top:1235px;font-size:94px;line-height:1.04;color:#F4EFE6}
+  #s1 .grand em{color:var(--clay-light)}
+
+  /* --- Scène 2 : rupture --- */
+  #s2 .q{left:90px;right:90px;top:640px;text-align:center;font-size:88px;line-height:1.08}
+  #s2 .demander{left:0;right:0;top:830px;text-align:center;font-size:170px;font-style:italic;color:var(--clay)}
+  .saisie{left:130px;right:130px;top:1150px;height:120px;border:1.5px solid var(--line);background:var(--card);
+    border-radius:60px;display:flex;align-items:center;padding:0 46px;font:400 38px 'Inter';color:#A39D92;
+    box-shadow:0 30px 70px rgba(60,40,20,.10)}
+  .caret{display:inline-block;width:4px;height:46px;background:var(--clay);margin-right:16px}
+
+  /* --- Scène 3 : révélation --- */
+  #s3 .marque{left:0;right:0;top:560px;text-align:center;font-size:230px;line-height:1}
+  #s3 .l1,#s3 .l2{left:90px;right:90px;text-align:center;font-size:66px;line-height:1.12}
+  #s3 .l1{top:880px} #s3 .l2{top:1050px}
+
+  /* --- Scène 4 : démonstrations --- */
+  .puces{left:0;right:0;top:120px;display:flex;justify-content:center;gap:18px}
+  .puces span{font:600 30px 'Inter';padding:18px 32px;border-radius:44px;background:#E9E1D3;color:#8C857A;transition:none}
+  .puces span.on{background:var(--clay);color:#fff}
+  .tel{left:100px;right:100px;top:250px;height:1290px;background:var(--card);border-radius:64px;
+    border:1px solid var(--line);box-shadow:0 50px 100px rgba(60,40,20,.14);overflow:hidden}
+  .bar{height:118px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 54px;gap:18px}
+  .pastille{width:46px;height:46px;border-radius:14px;background:var(--clay)}
+  .bar b{font:500 44px 'Newsreader',serif}
+  .conv{position:absolute;left:0;right:0;top:118px;bottom:170px;padding:48px 52px;overflow:hidden}
+  .demo{position:absolute;left:52px;right:52px;top:48px;display:flex;flex-direction:column;gap:30px}
+  .moi{align-self:flex-end;max-width:84%;background:var(--sand);border-radius:36px 36px 10px 36px;
+    padding:28px 34px;font:400 35px/1.38 'Inter'}
+  .pj{align-self:flex-end;display:flex;align-items:center;gap:20px;background:#fff;border:1px solid var(--line);
+    border-radius:26px;padding:22px 28px;font:500 31px 'Inter'}
+  .pj .ico{width:62px;height:76px;border-radius:10px;background:var(--clay-soft);display:grid;place-items:center;font:700 20px 'Inter';color:var(--clay)}
+  .pj small{display:block;font:400 25px 'Inter';color:var(--muted);margin-top:4px}
+  .frigo{align-self:flex-end;width:330px;height:300px;border-radius:26px;overflow:hidden;
+    background:linear-gradient(#f7f9fb,#e6edf2);border:1px solid var(--line);position:relative}
+  .frigo .et{position:absolute;left:0;right:0;height:6px;background:#cfd8df}
+  .frigo .it{position:absolute;font-size:62px}
+  .ia{font:400 36px/1.48 'Newsreader',serif;color:var(--ink);white-space:pre-wrap}
+  .ia b{font-weight:500}
+  .champ{position:absolute;left:36px;right:36px;bottom:36px;height:108px;border:1px solid var(--line);
+    border-radius:54px;display:flex;align-items:center;padding:0 40px;font:400 33px 'Inter';color:#A39D92;white-space:nowrap;overflow:hidden}
+  .champ.tape{color:var(--ink)}
+  .envoi{position:absolute;right:52px;bottom:52px;width:76px;height:76px;border-radius:50%;background:var(--clay);
+    display:grid;place-items:center;color:#fff;font:700 38px 'Inter'}
+
+  .st{left:70px;right:70px;bottom:120px;text-align:center;font:700 60px/1.16 'Inter';color:var(--ink)}
+  .st .w{opacity:.18}
+
+  /* --- Scène 5 : rassurer --- */
+  #s5 .titre{left:90px;right:90px;top:430px;text-align:center;font-size:96px;line-height:1.05}
+  .mode{left:130px;right:130px;height:170px;border-radius:44px;background:var(--card);border:1px solid var(--line);
+    display:flex;align-items:center;gap:34px;padding:0 50px;font:500 50px 'Inter';box-shadow:0 30px 60px rgba(60,40,20,.08)}
+  .mode .rond{width:96px;height:96px;border-radius:50%;background:var(--clay-soft);display:grid;place-items:center;font-size:46px}
+  #m1{top:880px} #m2{top:1090px}
+  .onde{display:flex;gap:9px;align-items:center;margin-left:auto;height:80px}
+  .onde i{display:block;width:9px;border-radius:5px;background:var(--clay)}
+  #s5 .fin{left:0;right:0;top:1380px;text-align:center;font-size:110px;font-style:italic;color:var(--clay)}
+
+  /* --- Scène 6 : bénéfice --- */
+  #s6 .horloge2{left:0;right:0;top:330px;text-align:center;font-size:250px;line-height:1;font-variant-numeric:tabular-nums}
+  #s6 .sous{left:0;right:0;top:600px;text-align:center;font:600 30px 'Inter';letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .tache{left:150px;right:150px;height:96px;border-radius:26px;background:var(--card);border:1px solid var(--line);
+    display:flex;align-items:center;gap:24px;padding:0 34px;font:500 34px 'Inter';color:var(--muted)}
+  .tache .ok{width:46px;height:46px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font:700 26px 'Inter';color:#fff}
+  #s6 .phrase{left:90px;right:90px;top:1150px;text-align:center;font-size:84px;line-height:1.08}
+  .moment{left:50%;font:500 34px 'Inter';background:var(--clay-soft);color:#8E3F22;padding:20px 34px;border-radius:50px;white-space:nowrap}
+
+  /* --- Scène 7 : appel à l'action --- */
+  #s7 .marque{left:0;right:0;top:520px;text-align:center;font-size:220px;line-height:1}
+  #s7 .a{left:0;right:0;top:830px;text-align:center;font-size:72px}
+  #s7 .b{left:0;right:0;top:915px;text-align:center;font-size:72px;font-style:italic;color:var(--clay)}
+  .bouton{left:50%;top:1190px;background:var(--ink);color:var(--cream);font:600 48px 'Inter';padding:42px 80px;border-radius:80px;white-space:nowrap}
+  .halo{left:50%;top:1190px;width:700px;height:136px;border-radius:80px;border:3px solid var(--clay)}
+  #s7 .url{left:0;right:0;top:1380px;text-align:center;font:500 38px 'Inter';color:var(--muted)}
+  #s7 .mention{left:0;right:0;bottom:110px;text-align:center;font:500 26px 'Inter';color:#9C968B}
+</style>
+</head>
+<body>
+<div id="lumiere" class="abs"></div>
+
+<!-- 1. ACCROCHE -->
+<section class="scene" id="s1">
+  <div id="cartes"></div>
+  <div id="horloge" class="abs">⏱ 18:00</div>
+  <div class="abs serif petit" id="h-petit"></div>
+  <div class="abs serif grand" id="h-grand"></div>
+</section>
+
+<!-- 2. RUPTURE -->
+<section class="scene" id="s2">
+  <div class="abs serif q" id="q"></div>
+  <div class="abs serif demander" id="demander">demander&nbsp;?</div>
+  <div class="abs saisie" id="saisie"><span class="caret" id="caret2"></span>Demandez n'importe quoi…</div>
+</section>
+
+<!-- 3. RÉVÉLATION -->
+<section class="scene" id="s3">
+  <div class="abs serif marque" id="marque3">Claude</div>
+  <div class="abs serif l1" id="l1"></div>
+  <div class="abs serif l2" id="l2"></div>
+</section>
+
+<!-- 4. DÉMONSTRATIONS -->
+<section class="scene" id="s4">
+  <div class="abs puces" id="puces"><span>✉️ Un mail</span><span>📄 Un contrat</span><span>🍳 Un repas</span></div>
+  <div class="abs tel" id="tel">
+    <div class="bar"><div class="pastille"></div><b>Claude</b></div>
+    <div class="conv">
+      <div class="demo" id="d0">
+        <div class="moi">Mon propriétaire augmente le loyer sans prévenir. Aide-moi à lui répondre, poliment mais fermement.</div>
+        <div class="ia" data-ia></div>
+      </div>
+      <div class="demo" id="d1">
+        <div class="pj"><div class="ico">PDF</div><div>Contrat_location.pdf<small>14 pages</small></div></div>
+        <div class="moi">Explique-moi ce contrat simplement. Il y a un piège&nbsp;?</div>
+        <div class="ia" data-ia></div>
+      </div>
+      <div class="demo" id="d2">
+        <div class="frigo">
+          <div class="et" style="top:100px"></div><div class="et" style="top:200px"></div>
+          <div class="it" style="left:30px;top:22px">🥚</div><div class="it" style="left:120px;top:22px">🧀</div><div class="it" style="left:220px;top:22px">🍋</div>
+          <div class="it" style="left:40px;top:122px">🍅</div><div class="it" style="left:140px;top:122px">🥬</div><div class="it" style="left:235px;top:122px">🧈</div>
+          <div class="it" style="left:70px;top:222px">🥛</div><div class="it" style="left:190px;top:222px">🫑</div>
+        </div>
+        <div class="moi">Qu'est-ce que je peux cuisiner avec ça&nbsp;?</div>
+        <div class="ia" data-ia></div>
+      </div>
+    </div>
+    <div class="champ" id="champ">Écrivez ou parlez à Claude…</div>
+    <div class="envoi">↑</div>
+  </div>
+  <div class="abs st" id="st"></div>
+</section>
+
+<!-- 5. RASSURER -->
+<section class="scene" id="s5">
+  <div class="abs serif titre" id="titre5"></div>
+  <div class="abs mode" id="m1"><div class="rond">⌨️</div>Vous écrivez</div>
+  <div class="abs mode" id="m2"><div class="rond">🎙️</div>ou vous parlez<div class="onde" id="onde"></div></div>
+  <div class="abs serif fin" id="fin5">et c'est tout.</div>
+</section>
+
+<!-- 6. BÉNÉFICE -->
+<section class="scene" id="s6">
+  <div class="abs serif horloge2" id="horloge2">23:47</div>
+  <div class="abs sous" id="sous6">Temps retrouvé</div>
+  <div id="taches"></div>
+  <div class="abs serif phrase" id="phrase6"></div>
+  <div id="moments"></div>
+</section>
+
+<!-- 7. APPEL À L'ACTION -->
+<section class="scene" id="s7">
+  <div class="abs serif marque" id="marque7">Claude</div>
+  <div class="abs serif a" id="a7">Vous demandez.</div>
+  <div class="abs serif b" id="b7">Il s'occupe du reste.</div>
+  <div class="abs halo" id="halo"></div>
+  <div class="abs bouton" id="bouton">Essayer gratuitement →</div>
+  <div class="abs url" id="url">claude.ai · sur ordinateur et téléphone</div>
+  <div class="abs mention" id="mention">Vidéo test — maquette non officielle</div>
+</section>
+
+<script>
+const TL = window.TIMELINE;            // injecté par le script de rendu
+const P = TL.phrases;
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const back = x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, x) => a + (b - a) * x;
+
+// Fenêtre d'une scène : fondu d'entrée, de sortie, et léger zoom continu.
+function scene(id, t, a, b, fi = .35, fo = .35) {
+  const el = $(id);
+  const o = Math.min(prog(t, a, a + fi), 1 - prog(t, b - fo, b));
+  el.style.opacity = o;
+  el.style.display = o <= 0 ? 'none' : 'block';
+  const z = 1 + 0.025 * prog(t, a, b);
+  el.style.transform = `scale(${z})`;
+  return o > 0;
+}
+
+// Texte révélé mot à mot. "*mot*" = mot mis en valeur (italique terracotta).
+function mots(el, texte, t0, t1) {
+  const parts = texte.split(' ');
+  el.innerHTML = '';
+  let total = parts.reduce((s, p) => s + p.length + 1, 0), acc = 0, em = false;
+  const spans = parts.map(p => {
+    let mot = p;
+    if (mot.startsWith('*')) { em = true; mot = mot.slice(1); }
+    const fin = mot.endsWith('*') || mot.endsWith('*,') || mot.endsWith('*.');
+    mot = mot.replace('*', '');
+    const s = document.createElement('span');
+    s.className = 'w' + (em ? ' em' : '');
+    s.textContent = mot + ' ';
+    s.dataset.t = t0 + (t1 - t0) * (acc / total);
+    acc += p.length + 1;
+    if (fin) em = false;
+    el.appendChild(s);
+    return s;
+  });
+  el._spans = spans;
+}
+function revele(el, t, dur = .32, mode = 'monte') {
+  for (const s of el._spans) {
+    const x = eo(prog(t, +s.dataset.t, +s.dataset.t + dur));
+    if (mode === 'monte') { s.style.opacity = x; s.style.transform = `translateY(${(1 - x) * 34}px)`; }
+    else s.style.opacity = .18 + .82 * x;
+  }
+}
+
+/* ---------- préparation ---------- */
+const CARTES = [
+  ['Répondre au propriétaire', 'en retard', 90, 260, -4],
+  ['Comprendre ce contrat', '14 pages', 230, 420, 3],
+  ['Aider le petit pour ses devoirs', '', 70, 580, -2],
+  ['Refaire mon CV', 'depuis 2019', 210, 740, 5],
+  ['Trouver quoi cuisiner ce soir', '', 110, 900, -6],
+];
+CARTES.forEach((c, i) => {
+  const d = document.createElement('div');
+  d.className = 't'; d.id = 'c' + i;
+  d.innerHTML = `<i></i>${c[0]}${c[1] ? `<small>${c[1]}</small>` : ''}`;
+  d.style.left = c[2] + 'px'; d.style.top = c[3] + 'px';
+  $('cartes').appendChild(d);
+});
+mots($('h-petit'), 'Cette semaine…', P[0].t0, P[0].t1);
+mots($('h-grand'), "combien d'heures avez-vous *perdues*, sur des choses qui vous épuisent ?", P[1].t0, P[1].t1);
+mots($('q'), 'Et si vous pouviez simplement…', P[2].t0, P[2].t1);
+mots($('l1'), 'Vous lui parlez comme à une personne.', P[5].t0, P[5].t1);
+mots($('l2'), 'Il vous répond *comme un expert.*', P[6].t0, P[6].t1);
+mots($('titre5'), "Pas besoin d'être *doué en informatique.*", P[13].t0, P[13].t1);
+mots($('phrase6'), 'Imaginez ce que vous ferez de tout ce *temps retrouvé.*', P[17].t0, P[17].t1);
+
+const TACHES = ['Répondre au propriétaire', 'Comprendre ce contrat', 'Trouver quoi cuisiner ce soir'];
+TACHES.forEach((x, i) => {
+  const d = document.createElement('div');
+  d.className = 'abs tache'; d.id = 'tk' + i; d.style.top = (720 + i * 120) + 'px';
+  d.innerHTML = `<div class="ok">✓</div><span>${x}</span>`;
+  $('taches').appendChild(d);
+});
+const MOMENTS = ['☕ Un café en terrasse', '🌳 Le parc avec les enfants', '📖 Une soirée rien qu\'à vous'];
+MOMENTS.forEach((x, i) => {
+  const d = document.createElement('div');
+  d.className = 'abs moment'; d.id = 'mo' + i; d.textContent = x;
+  d.style.top = (1520 + i * 108) + 'px';
+  $('moments').appendChild(d);
+});
+for (let i = 0; i < 9; i++) { const b = document.createElement('i'); $('onde').appendChild(b); }
+
+// Démonstrations : instant de départ, texte tapé, réponse de Claude.
+const DEMOS = [
+  { t: 15.35, tape: 'Mon propriétaire augmente le loyer sans prévenir…', ia:
+    "Voici une réponse claire et courtoise :\n\n« Bonjour Monsieur Martin,\nj'ai bien reçu votre courrier. Avant toute augmentation, pourriez-vous m'indiquer sur quelle clause du bail elle repose ?\nBien cordialement. »" },
+  { t: 19.45, tape: 'Explique-moi ce contrat simplement…', ia:
+    "En résumé, en 3 points :\n\n1. Engagement d'un an, résiliable avec un mois de préavis.\n2. Les charges sont incluses, sauf l'électricité.\n3. ⚠️ L'article 8 prévoit des frais si vous partez avant 6 mois." },
+  { t: 23.65, tape: "Qu'est-ce que je peux cuisiner avec ça ?", ia:
+    "Avec vos œufs, tomates et fromage : une omelette fondante, prête en 15 minutes 🍳\n\n1. Battez 4 œufs avec une pincée de sel.\n2. Ajoutez les tomates en dés et le fromage.\n3. Cuisez à feu doux, 4 minutes de chaque côté." },
+];
+// Sous-titres de la scène 4 (phrases 7 à 12).
+const ST = [[7, 'Un mail difficile ?'], [8, '*Dix secondes,* c\'est réglé.'], [9, 'Un contrat incompréhensible ?'],
+            [10, 'Il vous l\'explique *simplement.*'], [11, 'Plus d\'idée pour le dîner ?'], [12, 'Montrez-lui *votre frigo.*']];
+let stCourant = -1;
+
+/* ---------- rendu d'une image ---------- */
+window.render = function (t) {
+  // Fond : passage du sombre (stress) à la lumière (soulagement).
+  const r = eio(prog(t, 5.9, 6.9));
+  $('lumiere').style.clipPath = `circle(${r * 120}% at 50% 55%)`;
+
+  // 1. Accroche
+  if (scene('s1', t, 0, 6.5, .2, .7)) {
+    CARTES.forEach((c, i) => {
+      const a = 0.25 + i * 0.5, x = prog(t, a, a + .55);
+      const el = $('c' + i);
+      const flotte = Math.sin(t * 1.3 + i) * 6;
+      const sortie = eio(prog(t, 5.6, 6.4));
+      el.style.opacity = x * (1 - sortie);
+      el.style.transform = `translateY(${(1 - back(x)) * -260 + flotte - sortie * 120}px) rotate(${c[4] * (0.4 + .6 * x)}deg) scale(${1 - sortie * .1})`;
+      el.style.filter = `blur(${sortie * 10}px)`;
+    });
+    const minutes = 18 * 60 + Math.floor(347 * Math.pow(prog(t, 0, 5.5), 1.6));
+    $('horloge').textContent = `⏱ ${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+    revele($('h-petit'), t); revele($('h-grand'), t, .28);
+  }
+
+  // 2. Rupture
+  if (scene('s2', t, 6.2, 10.3, .3, .4)) {
+    revele($('q'), t, .4);
+    const d = back(prog(t, P[3].t0 - .05, P[3].t0 + .45));
+    $('demander').style.opacity = clamp(d);
+    $('demander').style.transform = `scale(${.75 + .25 * d})`;
+    const s = eo(prog(t, 8.95, 9.4));
+    $('saisie').style.opacity = s;
+    $('saisie').style.transform = `translateY(${(1 - s) * 40}px)`;
+    $('caret2').style.opacity = (Math.floor(t * 2.4) % 2) ? 0 : 1;
+  }
+
+  // 3. Révélation
+  if (scene('s3', t, 10.05, 15.25, .25, .45)) {
+    const m = eo(prog(t, 10.15, 11.0));
+    $('marque3').style.opacity = m;
+    $('marque3').style.transform = `scale(${1.18 - .18 * m})`;
+    $('marque3').style.letterSpacing = `${(1 - m) * 0.12 - 0.02}em`;
+    revele($('l1'), t); revele($('l2'), t);
+  }
+
+  // 4. Démonstrations
+  if (scene('s4', t, 14.9, 27.75, .45, .45)) {
+    const e = eo(prog(t, 14.9, 15.6));
+    $('tel').style.transform = `translateY(${(1 - e) * 500}px)`;
+    let actif = t < 19.4 ? 0 : t < 23.6 ? 1 : 2;
+    [...$('puces').children].forEach((s, i) => s.classList.toggle('on', i === actif));
+    DEMOS.forEach((d, i) => {
+      const el = $('d' + i);
+      const fin = DEMOS[i + 1] ? DEMOS[i + 1].t - .15 : 99;
+      const vis = t >= d.t + .9 && t < fin;
+      el.style.display = vis ? 'flex' : 'none';
+      if (!vis) return;
+      const items = [...el.children];
+      items.forEach((it, k) => {
+        if (it.hasAttribute('data-ia')) return;
+        const x = back(prog(t, d.t + .9 + k * .08, d.t + 1.25 + k * .08));
+        it.style.opacity = clamp(x); it.style.transform = `translateY(${(1 - x) * 40}px) scale(${.92 + .08 * x})`;
+      });
+      const ia = el.querySelector('[data-ia]');
+      const n = Math.floor(d.ia.length * eio(prog(t, d.t + 1.6, d.t + 3.7)));
+      ia.textContent = d.ia.slice(0, n);
+      ia.style.opacity = n > 0 ? 1 : 0;
+    });
+    // Champ de saisie : texte tapé puis envoyé.
+    const d = DEMOS.slice().reverse().find(d => t >= d.t) || DEMOS[0];
+    const champ = $('champ');
+    if (t >= d.t && t < d.t + .9) {
+      champ.textContent = d.tape.slice(0, Math.ceil(d.tape.length * prog(t, d.t, d.t + .8)));
+      champ.classList.add('tape');
+    } else { champ.textContent = 'Écrivez ou parlez à Claude…'; champ.classList.remove('tape'); }
+    // Sous-titres
+    let idx = -1;
+    ST.forEach(([p], i) => { if (t >= P[p].t0 - .15) idx = i; });
+    const st = $('st');
+    if (idx !== stCourant) {
+      stCourant = idx;
+      if (idx >= 0) mots(st, ST[idx][1], P[ST[idx][0]].t0, P[ST[idx][0]].t1); else st.innerHTML = '';
+    }
+    if (idx >= 0) {
+      revele(st, t, .15, 'surligne');
+      const a = eo(prog(t, P[ST[idx][0]].t0 - .15, P[ST[idx][0]].t0 + .1));
+      st.style.opacity = a; st.style.transform = `translateY(${(1 - a) * 20}px)`;
+    }
+  }
+
+  // 5. Rassurer
+  if (scene('s5', t, 27.45, 33.1, .4, .4)) {
+    revele($('titre5'), t);
+    [['m1', P[14].t0 - .15], ['m2', P[15].t0 - .15]].forEach(([id, a]) => {
+      const x = back(prog(t, a, a + .5));
+      $(id).style.opacity = clamp(x);
+      $(id).style.transform = `translateX(${(1 - x) * 120}px)`;
+    });
+    [...$('onde').children].forEach((b, i) => {
+      const actif = prog(t, P[15].t0, P[15].t0 + .2) * (1 - prog(t, 32.6, 32.9));
+      b.style.height = (14 + actif * 60 * Math.abs(Math.sin(t * 9 + i * 0.9))) + 'px';
+    });
+    const f = back(prog(t, P[16].t0 - .1, P[16].t0 + .4));
+    $('fin5').style.opacity = clamp(f);
+    $('fin5').style.transform = `scale(${.8 + .2 * f})`;
+  }
+
+  // 6. Bénéfice
+  if (scene('s6', t, 32.95, 37.0, .35, .4)) {
+    const k = eio(prog(t, 33.2, 35.6));
+    const minutes = Math.round(23 * 60 + 47 - k * 347);
+    $('horloge2').textContent = `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+    $('horloge2').style.color = k > 0.98 ? 'var(--clay)' : 'var(--ink)';
+    $('sous6').style.opacity = eo(prog(t, 33.4, 33.9));
+    TACHES.forEach((_, i) => {
+      const el = $('tk' + i);
+      const a = 33.3 + i * 0.12, c = 33.9 + i * 0.45;
+      const x = eo(prog(t, a, a + .4)), coche = prog(t, c, c + .15), part = eio(prog(t, c + .35, c + .85));
+      el.style.opacity = x * (1 - part);
+      el.style.transform = `translateX(${part * 300}px)`;
+      const ok = el.querySelector('.ok');
+      ok.style.background = coche > 0 ? 'var(--clay)' : 'transparent';
+      ok.style.borderColor = coche > 0 ? 'var(--clay)' : 'var(--line)';
+    });
+    revele($('phrase6'), t);
+    MOMENTS.forEach((_, i) => {
+      const a = 35.0 + i * 0.4, x = eo(prog(t, a, a + .6));
+      const el = $('mo' + i);
+      el.style.opacity = x;
+      el.style.transform = `translate(-50%, ${(1 - x) * 60}px)`;
+    });
+  }
+
+  // 7. Appel à l'action
+  if (scene('s7', t, 36.85, 99, .35, .1)) {
+    const m = eo(prog(t, P[18].t0 - .1, P[18].t0 + .7));
+    $('marque7').style.opacity = m;
+    $('marque7').style.transform = `scale(${1.12 - .12 * m})`;
+    [['a7', P[19].t0 - .1], ['b7', P[20].t0 - .1]].forEach(([id, a]) => {
+      const x = eo(prog(t, a, a + .5));
+      $(id).style.opacity = x; $(id).style.transform = `translateY(${(1 - x) * 30}px)`;
+    });
+    const b = back(prog(t, 40.0, 40.5));
+    $('bouton').style.opacity = clamp(b);
+    $('bouton').style.transform = `translateX(-50%) scale(${(.8 + .2 * b) * (1 + 0.025 * Math.sin(Math.max(0, t - 40.6) * 4))})`;
+    const h = ((t - 40.6) % 1.6) / 1.6;
+    $('halo').style.opacity = t > 40.6 ? (1 - h) * .6 : 0;
+    $('halo').style.transform = `translateX(-50%) scale(${1 + h * .25}, ${1 + h * .6})`;
+    $('url').style.opacity = eo(prog(t, 40.7, 41.2));
+    $('mention').style.opacity = eo(prog(t, 41.2, 41.8));
+  }
+};
+window.render(0);
+</script>
+</body>
+</html>

@@ -1,2 +1,6 @@
 # Extraits de voix ElevenLabs (contenu tiers, déjà envoyés à part)
 voix-proposees/
+# Fichiers intermédiaires régénérables
+production/seg/
+production/stills/
+production/audio/*.wav
